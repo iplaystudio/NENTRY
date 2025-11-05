@@ -1,0 +1,55 @@
+// CSS 变量定义 - 使用原版配色
+:root {
+  // 颜色 - 原版配色
+  --primary-color: rgba(29, 182, 253, 0.51);
+  --primary-dark: #003cff;
+  --secondary-color: rgba(21, 148, 245, 0.79);
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --warning-color: #f59e0b;
+  
+  // 背景色
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --hover-bg: #f1f5f9;
+  --code-bg: #f0f3f5; // 亮色主题使用浅色背景
+  
+  // 文字颜色
+  --text-color: #1e293b;
+  --text-secondary: #64748b;
+  --code-text: #0f172a; // 亮色主题使用深色文字
+  
+  // 边框
+  --border-color: #e2e8f0;
+  --border-radius: 8px;
+  
+  // 阴影
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  // 过渡
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s ease;
+  
+  // 侧边栏
+  --sidebar-width: 280px;
+}
+
+// 暗黑模式
+.dark-mode,
+body.dark-mode {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --sidebar-bg: #1e293b;
+  --hover-bg: #334155;
+  --code-bg: #161b22; // 原版暗色背景
+  
+  --text-color: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --code-text: #c9d1d9; // 原版暗色文字
+  
+  --border-color: #334155;
+}
