@@ -1,39 +1,28 @@
-/**
- * 生成唯一 ID
- */
 export function generateId() {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 }
 
-/**
- * 格式化时间
- */
 export function formatTime(timestamp) {
   const date = new Date(timestamp)
   const now = new Date()
   const diff = now - date
   
-  // 小于 1 分钟
   if (diff < 60000) {
     return '刚刚'
   }
   
-  // 小于 1 小时
   if (diff < 3600000) {
     return `${Math.floor(diff / 60000)} 分钟前`
   }
   
-  // 小于 1 天
   if (diff < 86400000) {
     return `${Math.floor(diff / 3600000)} 小时前`
   }
   
-  // 小于 7 天
   if (diff < 604800000) {
     return `${Math.floor(diff / 86400000)} 天前`
   }
   
-  // 格式化日期
   return date.toLocaleDateString('zh-CN', {
     year: 'numeric',
     month: '2-digit',
@@ -43,9 +32,6 @@ export function formatTime(timestamp) {
   })
 }
 
-/**
- * 防抖函数
- */
 export function debounce(fn, delay = 300) {
   let timer = null
   return function (...args) {
@@ -56,9 +42,6 @@ export function debounce(fn, delay = 300) {
   }
 }
 
-/**
- * 节流函数
- */
 export function throttle(fn, delay = 300) {
   let lastTime = 0
   return function (...args) {
@@ -70,9 +53,6 @@ export function throttle(fn, delay = 300) {
   }
 }
 
-/**
- * 压缩图片
- */
 export function compressImage(file, maxWidth = 800, quality = 0.8) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -87,7 +67,6 @@ export function compressImage(file, maxWidth = 800, quality = 0.8) {
         let width = img.width
         let height = img.height
         
-        // 按比例缩放
         if (width > maxWidth) {
           height = (height * maxWidth) / width
           width = maxWidth
@@ -99,7 +78,6 @@ export function compressImage(file, maxWidth = 800, quality = 0.8) {
         const ctx = canvas.getContext('2d')
         ctx.drawImage(img, 0, 0, width, height)
         
-        // 转为 base64
         const base64 = canvas.toDataURL('image/jpeg', quality)
         resolve(base64)
       }
@@ -111,9 +89,6 @@ export function compressImage(file, maxWidth = 800, quality = 0.8) {
   })
 }
 
-/**
- * 本地存储封装
- */
 export const storage = {
   get(key) {
     try {
@@ -155,9 +130,6 @@ export const storage = {
   }
 }
 
-/**
- * 深拷贝
- */
 export function deepClone(obj) {
   if (obj === null || typeof obj !== 'object') return obj
   if (obj instanceof Date) return new Date(obj)

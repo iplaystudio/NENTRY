@@ -1,4 +1,3 @@
-// Firebase 配置
 export const PROBLEMS = Object.freeze([
   { id: 1, title: '朝思暮想的 IPLAY logo', file: '1.PrintIPLAY' },
   { id: 2, title: "~~杨辉海~~ 杨辉三角", file: "2.Pascal's Triangle" },

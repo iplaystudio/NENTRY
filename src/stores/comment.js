@@ -5,18 +5,15 @@ import { getDB } from '../firebase'
 import { storage, generateId } from '../utils/helpers'
 
 export const useCommentStore = defineStore('comment', () => {
-  // State
-  const comments = ref({}) // { problemId: [...comments] }
+  const comments = ref({})
   const loading = ref(false)
   const submitting = ref(false)
 
-  // 用户信息 (仅本地存储,不同步到 Firebase)
   const userId = ref(storage.get('anonymousUserId') || generateId())
   const username = ref(storage.get('anonymousUsername') || generateRandomUsername())
   const avatar = ref(storage.get('anonymousAvatar') || getRandomAvatar())
   const isAvatarImage = ref(storage.get('isAvatarImage') === 'true')
 
-  // 初始化用户 ID
   if (!storage.get('anonymousUserId')) {
     storage.set('anonymousUserId', userId.value)
   }
@@ -28,13 +25,11 @@ export const useCommentStore = defineStore('comment', () => {
     storage.set('isAvatarImage', 'false')
   }
 
-  // Actions
   function updateUserProfile(newUsername, newAvatar, isImage = false) {
     username.value = newUsername
     avatar.value = newAvatar
     isAvatarImage.value = isImage
 
-    // 仅保存在本地浏览器
     storage.set('anonymousUsername', newUsername)
     storage.set('anonymousAvatar', newAvatar)
     storage.set('isAvatarImage', isImage ? 'true' : 'false')
@@ -43,7 +38,7 @@ export const useCommentStore = defineStore('comment', () => {
   }
 
   async function loadComments(problemId) {
-    if (comments.value[problemId]) return // 已加载
+    if (comments.value[problemId]) return
 
     loading.value = true
 
@@ -150,12 +145,10 @@ export const useCommentStore = defineStore('comment', () => {
       const db = getDB()
       const likesRef = dbRef(db, `comments/${problemId}/${commentId}/likes`)
       
-      // 获取当前点赞数
       const commentList = comments.value[problemId] || []
       const comment = commentList.find(c => c.id === commentId)
       const currentLikes = comment?.likes || 0
       
-      // 更新点赞数
       await set(likesRef, currentLikes + delta)
     } catch (error) {
       console.error('点赞失败:', error)
@@ -164,7 +157,6 @@ export const useCommentStore = defineStore('comment', () => {
   }
 
   return {
-    // State
     comments,
     loading,
     submitting,
@@ -172,8 +164,6 @@ export const useCommentStore = defineStore('comment', () => {
     username,
     avatar,
     isAvatarImage,
-
-    // Actions
     updateUserProfile,
     loadComments,
     addComment,
@@ -183,7 +173,6 @@ export const useCommentStore = defineStore('comment', () => {
   }
 })
 
-// 工具函数
 function generateRandomUsername() {
   const adjectives = ['快乐的', '聪明的', '勇敢的', '可爱的', '神秘的', '优雅的']
   const nouns = ['小猫', '小狗', '小熊', '小兔', '小鸟', '小鱼']

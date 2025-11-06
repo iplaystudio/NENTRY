@@ -3,7 +3,6 @@ import { marked } from 'marked'
 import hljs from 'highlight.js'
 
 export function useMarkdown() {
-  // 配置 marked
   const configureMarked = () => {
     marked.setOptions({
       highlight: (code, lang) => {
@@ -23,14 +22,12 @@ export function useMarkdown() {
     })
   }
 
-  // 渲染 Markdown
   const renderMarkdown = (content) => {
     if (!content) return ''
     
     try {
       let html = marked.parse(content)
       
-      // 修复图片路径: 将 ./图片名 转换为 BASE_URL/Problem/图片名
       const baseUrl = import.meta.env.BASE_URL
       html = html.replace(
         /<img([^>]*?)src=["']\.\/([^"']+)["']/g,
@@ -44,7 +41,6 @@ export function useMarkdown() {
     }
   }
 
-  // 渲染数学公式
   const renderMath = () => {
     if (window.MathJax && window.MathJax.typesetPromise) {
       window.MathJax.typesetPromise().catch((err) => {
@@ -56,7 +52,6 @@ export function useMarkdown() {
   onMounted(() => {
     configureMarked()
     
-    // 加载 MathJax
     if (!window.MathJax) {
       const script = document.createElement('script')
       script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'

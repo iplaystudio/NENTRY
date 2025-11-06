@@ -4,7 +4,6 @@ import { PROBLEMS, PATHS } from '../config/constants'
 import { storage } from '../utils/helpers'
 
 export const useProblemStore = defineStore('problem', () => {
-  // State
   const problems = ref(PROBLEMS)
   const currentProblemId = ref(null)
   const problemContents = ref(new Map())
@@ -12,7 +11,6 @@ export const useProblemStore = defineStore('problem', () => {
   const loading = ref(false)
   const error = ref(null)
 
-  // Getters
   const currentProblem = computed(() => {
     if (!currentProblemId.value) return null
     return problems.value.find(p => p.id === currentProblemId.value)
@@ -28,11 +26,9 @@ export const useProblemStore = defineStore('problem', () => {
     return solutionContents.value.get(currentProblemId.value) || ''
   })
 
-  // Actions
   async function selectProblem(problemId) {
     currentProblemId.value = problemId
     
-    // 如果已经加载过，直接返回
     if (problemContents.value.has(problemId) && solutionContents.value.has(problemId)) {
       return
     }
@@ -51,15 +47,7 @@ export const useProblemStore = defineStore('problem', () => {
     error.value = null
 
     try {
-      // 暂时禁用缓存，直接从服务器加载
-      // const cached = storage.get(`problem_${problemId}`)
-      // if (cached) {
-      //   problemContents.value.set(problemId, cached)
-      //   return
-      // }
-
-      // 从服务器加载
-      const response = await fetch(`${import.meta.env.BASE_URL}${PATHS.PROBLEM}/${problem.file}.md`)
+      const response = await fetch(`${import.meta.env.BASE_URL}Problem/${problem.file}.md`)
       if (!response.ok) {
         console.error('加载失败:', response.status, response.statusText)
         throw new Error(`加载题目失败: ${response.status}`)
@@ -68,9 +56,6 @@ export const useProblemStore = defineStore('problem', () => {
       const content = await response.text()
       console.log(`📄 加载题目 ${problemId}:`, content.substring(0, 100))
       problemContents.value.set(problemId, content)
-      
-      // 暂时不缓存
-      // storage.set(`problem_${problemId}`, content)
     } catch (err) {
       console.error('加载题目失败:', err)
       error.value = err.message
@@ -84,15 +69,7 @@ export const useProblemStore = defineStore('problem', () => {
     if (!problem) return
 
     try {
-      // 暂时禁用缓存
-      // const cached = storage.get(`solution_${problemId}`)
-      // if (cached) {
-      //   solutionContents.value.set(problemId, cached)
-      //   return
-      // }
-
-      // 从服务器加载
-      const response = await fetch(`${import.meta.env.BASE_URL}${PATHS.SOLUTION}/${problem.file}.c`)
+      const response = await fetch(`${import.meta.env.BASE_URL}Solution/${problem.file}.c`)
       if (!response.ok) {
         console.error('加载题解失败:', response.status, response.statusText)
         throw new Error(`加载题解失败: ${response.status}`)
@@ -100,19 +77,14 @@ export const useProblemStore = defineStore('problem', () => {
       
       const content = await response.text()
       solutionContents.value.set(problemId, content)
-      
-      // 暂时不缓存
-      // storage.set(`solution_${problemId}`, content)
     } catch (err) {
       console.error('加载题解失败:', err)
-      // 题解加载失败不影响题目显示
     }
   }
 
   function clearCache() {
     problemContents.value.clear()
     solutionContents.value.clear()
-    // 清除本地存储的缓存
     problems.value.forEach(p => {
       storage.remove(`problem_${p.id}`)
       storage.remove(`solution_${p.id}`)
@@ -120,18 +92,13 @@ export const useProblemStore = defineStore('problem', () => {
   }
 
   return {
-    // State
     problems,
     currentProblemId,
     loading,
     error,
-    
-    // Getters
     currentProblem,
     currentProblemContent,
     currentSolutionContent,
-    
-    // Actions
     selectProblem,
     clearCache
   }

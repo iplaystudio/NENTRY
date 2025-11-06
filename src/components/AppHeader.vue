@@ -97,7 +97,6 @@ const isDark = inject('isDark', false)
         }
       }
 
-      // 桌面端隐藏移动菜单按钮
       &.mobile-menu-btn {
         display: none;
       }

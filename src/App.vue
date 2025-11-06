@@ -36,23 +36,18 @@ import { useTheme } from './composables/useTheme'
 import { useMobile } from './composables/useMobile'
 import { initFirebase } from './firebase'
 
-// 初始化 Firebase
 initFirebase()
 
 const problemStore = useProblemStore()
 const { isDark, toggleTheme } = useTheme()
 const { isSidebarOpen, toggleSidebar, closeSidebar } = useMobile()
 
-// 提供给子组件
 provide('isDark', isDark)
 
-// 监听暗色模式切换,动态加载 highlight.js 主题
 watch(isDark, async (dark) => {
   if (dark) {
-    // 移除亮色主题,加载暗色主题
     await import('highlight.js/styles/github-dark.css')
   }
-  // 亮色主题已经在 main.js 中默认加载
 }, { immediate: false })
 
 const problems = computed(() => problemStore.problems)
