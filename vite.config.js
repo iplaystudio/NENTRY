@@ -16,7 +16,7 @@ export default defineConfig({
       }
     }
   },
-  base: process.env.NODE_ENV === 'production' ? '/NENTRY/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/ENTRY/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
